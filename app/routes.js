@@ -4,7 +4,35 @@ module.exports = function( app ) {
 
   app.get( '/', function( req, res ) {
     
-    res.send( "Hello, world!" );
+    res.render( 'index.ejs' );
+
+  } );
+
+  app.get( '/signup', function( req, res ) {
+
+    res.render( 'signup.ejs', { message: 'Please sign up below.' } );
+
+  } );
+
+  app.post('/signup', function( req, res ){
+
+    var newUser = new User();
+
+    newUser.local.username = req.body.email;
+    newUser.local.password = req.body.password;
+
+    newUser.save( function(err) {
+      if( err )
+        throw err;
+    } );
+
+    res.redirect('/profile');
+
+  } );
+
+  app.get( '/profile', function( req, res ) {
+
+    res.send( "You have signed up!" );
 
   } );
 
@@ -28,4 +56,4 @@ module.exports = function( app ) {
 
   } );
 
-}
+};

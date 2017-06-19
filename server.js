@@ -23,7 +23,12 @@ mongoose.connect( configDB.url );
 
 var port = process.env.PORT || 8080;
 
+var bodyParser = require( 'body-parser' );
+app.use( bodyParser.urlencoded( { extended: false } ) );
+app.set( 'view engine', 'ejs' );
+
 var routes = require( './app/routes.js' );
 routes( app );
+
 
 app.listen( port );
