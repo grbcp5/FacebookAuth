@@ -1,0 +1,19 @@
+{
+  "name": "facebook_auth",
+  "version": "1.0.0",
+  "description": "Learn Node concepts targeted with facebook authentication.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grbcp5/FacebookAuth.git"
+  },
+  "author": "Grant Broadwater",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grbcp5/FacebookAuth/issues"
+  },
+  "homepage": "https://github.com/grbcp5/FacebookAuth#readme"
+}
