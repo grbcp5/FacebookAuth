@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/grbcp5/FacebookAuth/issues"
   },
-  "homepage": "https://github.com/grbcp5/FacebookAuth#readme"
+  "homepage": "https://github.com/grbcp5/FacebookAuth#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "morgan": "^1.8.2"
+  }
 }
