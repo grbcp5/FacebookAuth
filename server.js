@@ -16,16 +16,14 @@ app.use( expressSession( {
 
 } ) );
 
+var configDB = require( './config/database.js' );
+
+var mongoose = require( 'mongoose' );
+mongoose.connect( configDB.url );
+
 var port = process.env.PORT || 8080;
 
-app.use( '/', function( req, res ) {
-  
-  console.log( req.cookies );
-  console.log( "=========" );
-  console.log( req.session );
-
-  res.send( "Hello, world!" );
-
-} );
+var routes = require( './app/routes.js' );
+routes( app );
 
 app.listen( port );
