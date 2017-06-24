@@ -1,59 +1,62 @@
 var User = require( './models/user.js' );
 
-module.exports = function( app ) {
+module.exports = function( app, passport ) {
 
   app.get( '/', function( req, res ) {
     
-    res.render( 'index.ejs' );
+    res.render( 'index.ejs', { user: req.user } );
 
   } );
 
   app.get( '/signup', function( req, res ) {
 
-    res.render( 'signup.ejs', { message: 'Please sign up below.' } );
+    res.render( 'signup.ejs', { message: req.flash( 'signupMessage' ) } );
 
   } );
 
-  app.post('/signup', function( req, res ){
+  app.post('/signup', passport.authenticate( 'local-signup', {
+    successRedirect: '/profile',
+    failureRedirect: '/signup',
+    failureFlash: true
+  } ) );
 
-    var newUser = new User();
+  app.get( '/profile', grantProfileAccess, function( req, res ) {
 
-    newUser.local.username = req.body.email;
-    newUser.local.password = req.body.password;
-
-    newUser.save( function(err) {
-      if( err )
-        throw err;
-    } );
-
-    res.redirect('/profile');
+    res.render( 'profile.ejs', { user: req.user } );
 
   } );
 
-  app.get( '/profile', function( req, res ) {
+  app.get( '/login', proceedToLogin, function( req, res ) {
 
-    res.send( "You have signed up!" );
+    res.render( 'login.ejs', { message: req.flash( 'loginMessage' ) } );
 
   } );
 
-  app.get( '/:username/:password', function( req, res ) {
+  app.post( '/login', passport.authenticate( 'local-login', {
+    successRedirect: '/profile',
+    failureRedirect: '/login',
+    failureFlash: true
+  } ) );
 
-    var userName = req.params.username;
-    var password = req.params.password;
-
-    var newUser = new User();
-    newUser.local.username = userName;
-    newUser.local.password = password;
-
-    console.log( newUser.local.username + " " + newUser.local.password + "." );
-
-    newUser.save( function( err ) {
-      if( err )
-        throw err;
-    } );
-
-    res.send( "Done" );
-
+  app.get( '/logout',  function ( req, res ) {
+    req.logout();
+    res.redirect( '/' );
   } );
 
 };
+
+
+function grantProfileAccess( req, res, next ) {
+  if( req.isAuthenticated() ) {
+    return next()
+  } else {
+    res.redirect( '/login' );
+  }
+}
+
+function proceedToLogin( req, res, next ) {
+  if( !req.isAuthenticated() )
+    return next();
+  else
+    res.redirect( '/profile' );
+}

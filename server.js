@@ -27,8 +27,16 @@ var bodyParser = require( 'body-parser' );
 app.use( bodyParser.urlencoded( { extended: false } ) );
 app.set( 'view engine', 'ejs' );
 
-var routes = require( './app/routes.js' );
-routes( app );
+var passport = require( 'passport' );
+app.use( passport.initialize() );
+app.use( passport.session() );
 
+var flash = require( 'connect-flash' );
+app.use( flash() );
+
+require( './config/passport.js' )( passport );
+
+var routes = require( './app/routes.js' );
+routes( app, passport );
 
 app.listen( port );
