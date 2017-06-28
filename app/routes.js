@@ -43,7 +43,14 @@ module.exports = function( app, passport ) {
     res.redirect( '/' );
   } );
 
+
+  app.use( '/auth/facebook', shouldAuth, passport.authenticate( 'facebook' ) );
+
+  app.get('/auth/facebook/callback', shouldAuth,
+    passport.authenticate('facebook', { successRedirect: '/profile',
+      failureRedirect: '/login' } ) );
 };
+
 
 
 function grantProfileAccess( req, res, next ) {
@@ -51,6 +58,15 @@ function grantProfileAccess( req, res, next ) {
     return next()
   } else {
     res.redirect( '/login' );
+  }
+}
+
+function shouldAuth( req, res, next ) {
+  console.log( "shouldAuth" );
+  if( req.isAuthenticated() ) {
+    res.redirect( '/profile' );
+  } else {
+    next();
   }
 }
 

@@ -19,10 +19,11 @@
 
         <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>
             <%=
-            ( locals.user ) ? user.local.username : "Login"
+            ( locals.user ) ? ( ( user.local.username === undefined ) ? user.facebook.name : local.username ) : "Login"
             %>
         </a>
         <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
+        <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
     </div>
 
 </div>

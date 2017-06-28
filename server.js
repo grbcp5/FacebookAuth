@@ -21,7 +21,7 @@ var configDB = require( './config/database.js' );
 var mongoose = require( 'mongoose' );
 mongoose.connect( configDB.url );
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 80;
 
 var bodyParser = require( 'body-parser' );
 app.use( bodyParser.urlencoded( { extended: false } ) );
@@ -34,7 +34,8 @@ app.use( passport.session() );
 var flash = require( 'connect-flash' );
 app.use( flash() );
 
-require( './config/passport.js' )( passport );
+var auth = require( './config/auth.js' );
+require( './config/passport.js' )( passport, auth );
 
 var routes = require( './app/routes.js' );
 routes( app, passport );
