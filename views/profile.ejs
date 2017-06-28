@@ -50,8 +50,10 @@
 
     </div>
 
-    <p>Message: <%= user.message %></p>
-
+   <form action="/setMessage" method="post" >
+      Message: <input type="text" name="message" value="<%= user.message %>"></br>
+      <input type="submit" value="Set">
+    </form>
 </div>
 </body>
 </html>

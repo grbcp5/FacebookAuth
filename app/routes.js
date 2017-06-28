@@ -44,6 +44,26 @@ module.exports = function( app, passport ) {
   } );
 
 
+  app.use( '/setMessage', setMessageMiddleware, function( req, res ) {
+
+    User.findOne( { 'facebook.id': req.user.facebook.id } , function( err, user ) {
+
+      if( err || !user ) {
+        res.send( "Cannot update message" );
+      } else {
+        
+        user.message = req.body.message;
+        user.save( function( err ) {
+          if( err )
+            throw err;
+        } );
+        res.redirect( '/profile' );
+
+      }
+
+    } );
+  } );
+
   app.use( '/auth/facebook', shouldAuth, passport.authenticate( 'facebook' ) );
 
   app.get('/auth/facebook/callback', shouldAuth,
@@ -67,6 +87,14 @@ function shouldAuth( req, res, next ) {
     res.redirect( '/profile' );
   } else {
     next();
+  }
+}
+
+function setMessageMiddleware( req, res, next ) {
+  if( req.isAuthenticated() ) {
+    next();
+  } else {
+    res.render( 'login.ejs', { message: req.flash( 'loginMessage', 'You must log in then enter the message you wish to set.' ) } );
   }
 }
 
